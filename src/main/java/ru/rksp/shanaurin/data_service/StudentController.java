@@ -1,11 +1,14 @@
 package ru.rksp.shanaurin.data_service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import ru.rksp.shanaurin.data.api.StudentDataApi;
 import ru.rksp.shanaurin.data.model.StudentDataCreateRequest;
 import ru.rksp.shanaurin.data.model.StudentDataResponse;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,9 +30,15 @@ public class StudentController implements StudentDataApi {
         return ResponseEntity.status(200).body(response);
     }
 
-  /*@Override
-  public ResponseEntity<StudentDataResponse> getStudentDataByIdFromData(Long id) {
-
-    return ResponseEntity.status(200).body(response);
-  }*/
-}
+    @Override
+    public ResponseEntity<StudentDataResponse> getStudentDataByIdFromData(Long id) {
+        return studentRepository.findById(id)
+                .map(student -> {
+                    StudentDataResponse response = new StudentDataResponse();
+                    response.setId(student.getId());
+                    response.setFullName(student.getName());
+                    response.setPassport(student.getPassport());
+                    return ResponseEntity.ok(response);
+                })
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }}
