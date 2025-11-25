@@ -6,7 +6,7 @@ info:
     API шлюза (GATE), принимающего запросы от внешних клиентов
     и перенаправляющего их во внутренний сервис DATA-SERVICE.
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:8085
     description: GATE Service (внешний)
 
 paths:
@@ -36,7 +36,7 @@ paths:
       description: Возвращает информацию о студенте по идентификатору.
       operationId: getStudent
       tags:
-        - StudentGate
+        - studentGate
       parameters:
         - name: id
           in: path
